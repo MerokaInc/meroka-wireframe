@@ -1,0 +1,2120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meroka — Legal & Regulatory Treasure Map</title>
+<style>
+  /* ===== RESET & BASE ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: #0d0d1a;
+    color: #e0e0e8;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ===== SCROLLBAR ===== */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: #12122a; }
+  ::-webkit-scrollbar-thumb { background: #2a2a4a; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: #4a90d9; }
+
+  /* ===== HEADER ===== */
+  .header {
+    background: linear-gradient(135deg, #0f0f2a 0%, #1a1a3e 50%, #0f0f2a 100%);
+    border-bottom: 2px solid #4a90d9;
+    padding: 40px 32px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(74,144,217,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .header-brand {
+    font-size: 13px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: #4a90d9;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .header h1 span { color: #4a90d9; }
+  .header .subtitle {
+    font-size: 14px;
+    color: #8888aa;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .header .confidential {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 3px 14px;
+    border: 1px solid rgba(255,80,80,0.4);
+    border-radius: 3px;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: #ff6b6b;
+    text-transform: uppercase;
+  }
+
+  /* ===== NAV / FILTERS ===== */
+  .filter-bar {
+    background: #12122a;
+    border-bottom: 1px solid #1e1e3a;
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(12px);
+  }
+  .filter-bar label {
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #666688;
+    margin-right: 8px;
+  }
+  .filter-btn {
+    background: #1a1a3e;
+    border: 1px solid #2a2a5a;
+    color: #8888aa;
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-family: inherit;
+  }
+  .filter-btn:hover {
+    border-color: #4a90d9;
+    color: #c0c0e0;
+  }
+  .filter-btn.active {
+    background: #4a90d9;
+    border-color: #4a90d9;
+    color: #ffffff;
+    box-shadow: 0 2px 12px rgba(74,144,217,0.3);
+  }
+  .jump-links {
+    margin-left: auto;
+    display: flex;
+    gap: 8px;
+  }
+  .jump-link {
+    font-size: 11px;
+    color: #5a5a8a;
+    text-decoration: none;
+    padding: 4px 10px;
+    border-radius: 4px;
+    transition: all 0.2s;
+  }
+  .jump-link:hover {
+    background: #1a1a3e;
+    color: #4a90d9;
+  }
+
+  /* ===== MAIN CONTAINER ===== */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+  }
+
+  /* ===== SECTION PANELS ===== */
+  .section-panel {
+    background: #12122a;
+    border: 1px solid #1e1e3a;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    overflow: hidden;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .section-panel:hover {
+    border-color: #2a2a5a;
+  }
+  .section-panel.open {
+    border-color: #3a3a6a;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+  }
+  .section-header {
+    padding: 20px 28px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    user-select: none;
+    transition: background 0.2s;
+  }
+  .section-header:hover {
+    background: rgba(74,144,217,0.04);
+  }
+  .section-number {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #4a90d9, #3a70b0);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+    flex: 1;
+  }
+  .section-subtitle {
+    font-size: 13px;
+    color: #6666aa;
+    margin-top: 2px;
+  }
+  .section-chevron {
+    font-size: 18px;
+    color: #4a90d9;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+  }
+  .section-panel.open .section-chevron {
+    transform: rotate(180deg);
+  }
+  .section-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease;
+    padding: 0 28px;
+  }
+  .section-panel.open .section-body {
+    max-height: 8000px;
+    padding: 0 28px 28px;
+  }
+
+  /* ===== BADGES ===== */
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .badge-green { background: rgba(72,199,142,0.15); color: #48c78e; border: 1px solid rgba(72,199,142,0.25); }
+  .badge-amber { background: rgba(255,183,77,0.15); color: #ffb74d; border: 1px solid rgba(255,183,77,0.25); }
+  .badge-red { background: rgba(255,99,99,0.15); color: #ff6363; border: 1px solid rgba(255,99,99,0.25); }
+  .badge-blue { background: rgba(74,144,217,0.15); color: #4a90d9; border: 1px solid rgba(74,144,217,0.25); }
+  .badge-gray { background: rgba(140,140,170,0.15); color: #8c8caa; border: 1px solid rgba(140,140,170,0.25); }
+  .badge-purple { background: rgba(160,100,220,0.15); color: #a064dc; border: 1px solid rgba(160,100,220,0.25); }
+
+  .badge-code {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 24px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+  }
+  .badge-code.practice { background: linear-gradient(135deg, #4a90d9, #3a70b0); color: #fff; }
+  .badge-code.employer { background: linear-gradient(135deg, #48c78e, #38a07e); color: #fff; }
+  .badge-code.system { background: linear-gradient(135deg, #a064dc, #8050b0); color: #fff; }
+
+  /* ===== FIELD CARDS (Section 1) ===== */
+  .field-group-label {
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #4a90d9;
+    margin: 24px 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #1e1e3a;
+    font-weight: 600;
+  }
+  .field-group-label:first-child { margin-top: 8px; }
+
+  .field-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+  .field-card {
+    background: #1a1a3e;
+    border: 1px solid #2a2a5a;
+    border-radius: 10px;
+    padding: 18px 20px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    position: relative;
+  }
+  .field-card:hover {
+    border-color: #4a90d9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(74,144,217,0.12);
+  }
+  .field-card-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .field-card-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #ffffff;
+    flex: 1;
+  }
+  .field-card-source {
+    font-size: 12px;
+    color: #7777aa;
+    margin-bottom: 10px;
+  }
+  .field-card-badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .field-card-detail {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, margin-top 0.25s ease;
+    margin-top: 0;
+  }
+  .field-card.expanded .field-card-detail {
+    max-height: 300px;
+    margin-top: 14px;
+  }
+  .field-detail-inner {
+    padding-top: 14px;
+    border-top: 1px solid #2a2a5a;
+  }
+  .detail-row {
+    display: flex;
+    margin-bottom: 6px;
+    font-size: 13px;
+  }
+  .detail-label {
+    color: #6666aa;
+    width: 120px;
+    flex-shrink: 0;
+  }
+  .detail-value {
+    color: #c0c0e0;
+  }
+  .field-card-expand-hint {
+    position: absolute;
+    bottom: 8px;
+    right: 14px;
+    font-size: 10px;
+    color: #4a4a6a;
+    transition: color 0.2s;
+  }
+  .field-card:hover .field-card-expand-hint { color: #4a90d9; }
+  .field-card.expanded .field-card-expand-hint { display: none; }
+
+  /* ===== TABLE (Section 2) ===== */
+  .reg-table-wrapper {
+    overflow-x: auto;
+    margin-top: 8px;
+    border-radius: 8px;
+    border: 1px solid #1e1e3a;
+  }
+  .reg-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .reg-table thead th {
+    background: #1a1a3e;
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    color: #8888bb;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 11px;
+    border-bottom: 2px solid #2a2a5a;
+    white-space: nowrap;
+  }
+  .reg-table tbody tr {
+    transition: background 0.15s;
+  }
+  .reg-table tbody tr:hover {
+    background: rgba(74,144,217,0.04);
+  }
+  .reg-table tbody td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #1a1a3a;
+    color: #c0c0e0;
+    vertical-align: top;
+  }
+  .reg-table tbody tr:last-child td { border-bottom: none; }
+  .reg-table .domain-col { font-weight: 600; color: #ffffff; white-space: nowrap; }
+  .reg-table .statute-col { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12px; color: #8888bb; }
+
+  /* ===== CONTRACT FLOW (Section 3) ===== */
+  .contract-flow {
+    margin-top: 16px;
+    padding: 32px 24px;
+    background: #0d0d1a;
+    border: 1px solid #1e1e3a;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  .contract-flow::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse at 50% 50%, rgba(74,144,217,0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .flow-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .flow-node {
+    background: #1a1a3e;
+    border: 1px solid #3a3a6a;
+    border-radius: 10px;
+    padding: 16px 24px;
+    text-align: center;
+    min-width: 180px;
+    position: relative;
+    transition: all 0.25s;
+  }
+  .flow-node:hover {
+    border-color: #4a90d9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(74,144,217,0.15);
+  }
+  .flow-node-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 4px;
+  }
+  .flow-node-sub {
+    font-size: 11px;
+    color: #6666aa;
+  }
+  .flow-node.primary {
+    border-color: #4a90d9;
+    background: linear-gradient(135deg, #1a1a3e, #1a2a4e);
+  }
+  .flow-arrow {
+    font-size: 24px;
+    color: #4a90d9;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .flow-down-connector {
+    display: flex;
+    justify-content: space-around;
+    padding: 0 60px;
+    margin-bottom: 20px;
+  }
+  .flow-down-line {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .flow-down-arrow {
+    color: #3a3a6a;
+    font-size: 18px;
+  }
+  .flow-sub-node {
+    background: #12122a;
+    border: 1px solid #2a2a5a;
+    border-radius: 8px;
+    padding: 10px 18px;
+    text-align: center;
+    font-size: 12px;
+    color: #8888bb;
+    transition: all 0.25s;
+  }
+  .flow-sub-node:hover {
+    border-color: #4a90d9;
+    color: #c0c0e0;
+  }
+  .flow-payment-row {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px dashed #2a2a5a;
+    text-align: center;
+  }
+  .flow-payment-box {
+    display: inline-block;
+    background: #1a1a3e;
+    border: 1px solid #2a2a5a;
+    border-radius: 10px;
+    padding: 18px 32px;
+    position: relative;
+  }
+  .flow-payment-title {
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #4a90d9;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  .flow-payment-line {
+    font-size: 13px;
+    color: #c0c0e0;
+    margin-bottom: 4px;
+  }
+  .flow-payment-line span { color: #48c78e; font-weight: 600; }
+
+  /* ===== GATE CHECK FLOW (Section 4) ===== */
+  .gate-flow {
+    margin-top: 16px;
+    padding: 32px 20px;
+    background: #0d0d1a;
+    border: 1px solid #1e1e3a;
+    border-radius: 12px;
+  }
+  .gate-pipeline {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0;
+    flex-wrap: wrap;
+  }
+  .gate-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    min-width: 130px;
+  }
+  .gate-step-box {
+    background: #1a1a3e;
+    border: 1px solid #2a2a5a;
+    border-radius: 10px;
+    padding: 14px 18px;
+    text-align: center;
+    min-width: 130px;
+    transition: all 0.25s;
+  }
+  .gate-step-box:hover {
+    border-color: #4a90d9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(74,144,217,0.12);
+  }
+  .gate-step-box.check {
+    border-color: #ffb74d;
+    background: linear-gradient(135deg, #1a1a3e, #2a2030);
+  }
+  .gate-step-box.success {
+    border-color: #48c78e;
+    background: linear-gradient(135deg, #1a1a3e, #1a2a2e);
+  }
+  .gate-step-box.action {
+    border-color: #4a90d9;
+    background: linear-gradient(135deg, #1a1a3e, #1a2a4e);
+  }
+  .gate-step-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 4px;
+  }
+  .gate-step-sub {
+    font-size: 11px;
+    color: #6666aa;
+  }
+  .gate-arrow {
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    color: #4a90d9;
+    font-size: 20px;
+    margin-top: 14px;
+  }
+  .gate-branch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 8px;
+    gap: 4px;
+  }
+  .gate-branch-arrow {
+    color: #ff6363;
+    font-size: 16px;
+  }
+  .gate-branch-box {
+    background: rgba(255,99,99,0.08);
+    border: 1px solid rgba(255,99,99,0.25);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 11px;
+    color: #ff6363;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  /* ===== ROADMAP (Section 5) ===== */
+  .roadmap {
+    margin-top: 16px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 900px) {
+    .roadmap { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 560px) {
+    .roadmap { grid-template-columns: 1fr; }
+  }
+  .roadmap-card {
+    background: #1a1a3e;
+    border: 1px solid #2a2a5a;
+    border-radius: 12px;
+    padding: 24px 20px;
+    position: relative;
+    transition: all 0.25s;
+    overflow: hidden;
+  }
+  .roadmap-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .roadmap-card.v1::before { background: linear-gradient(90deg, #4a90d9, #48c78e); }
+  .roadmap-card.v2::before { background: linear-gradient(90deg, #48c78e, #a064dc); }
+  .roadmap-card.v3::before { background: linear-gradient(90deg, #a064dc, #ffb74d); }
+  .roadmap-card.v4::before { background: linear-gradient(90deg, #ffb74d, #ff6363); }
+  .roadmap-card:hover {
+    border-color: #4a90d9;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 24px rgba(74,144,217,0.12);
+  }
+  .roadmap-version {
+    font-size: 28px;
+    font-weight: 800;
+    color: #4a90d9;
+    margin-bottom: 4px;
+  }
+  .roadmap-card.v2 .roadmap-version { color: #48c78e; }
+  .roadmap-card.v3 .roadmap-version { color: #a064dc; }
+  .roadmap-card.v4 .roadmap-version { color: #ffb74d; }
+  .roadmap-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #6666aa;
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+  .roadmap-list {
+    list-style: none;
+    padding: 0;
+  }
+  .roadmap-list li {
+    font-size: 13px;
+    color: #c0c0e0;
+    padding: 5px 0;
+    padding-left: 16px;
+    position: relative;
+  }
+  .roadmap-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #4a90d9;
+  }
+  .roadmap-card.v2 .roadmap-list li::before { background: #48c78e; }
+  .roadmap-card.v3 .roadmap-list li::before { background: #a064dc; }
+  .roadmap-card.v4 .roadmap-list li::before { background: #ffb74d; }
+  .roadmap-connector {
+    display: none; /* we use the grid gap instead */
+  }
+
+  /* ===== DATA SOURCE CARDS (Section 6) ===== */
+  .source-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+    margin-top: 12px;
+  }
+  .source-card {
+    background: #1a1a3e;
+    border: 1px solid #2a2a5a;
+    border-radius: 10px;
+    padding: 20px;
+    transition: all 0.25s;
+  }
+  .source-card:hover {
+    border-color: #4a90d9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(74,144,217,0.12);
+  }
+  .source-card-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 10px;
+  }
+  .source-card-row {
+    display: flex;
+    margin-bottom: 6px;
+    font-size: 13px;
+  }
+  .source-card-label {
+    color: #6666aa;
+    width: 90px;
+    flex-shrink: 0;
+    font-weight: 500;
+  }
+  .source-card-value {
+    color: #c0c0e0;
+  }
+
+  /* ===== FUTURE STATE (Section 7) ===== */
+  .future-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+    margin-top: 12px;
+  }
+  .future-card {
+    background: #14142a;
+    border: 1px dashed #2a2a4a;
+    border-radius: 12px;
+    padding: 24px;
+    opacity: 0.65;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .future-card:hover {
+    opacity: 0.9;
+    border-color: #3a3a6a;
+    transform: translateY(-2px);
+  }
+  .future-card::after {
+    content: 'FUTURE';
+    position: absolute;
+    top: 12px;
+    right: -24px;
+    background: rgba(140,140,170,0.2);
+    color: #6666aa;
+    font-size: 10px;
+    letter-spacing: 2px;
+    padding: 2px 32px;
+    transform: rotate(45deg);
+    font-weight: 700;
+  }
+  .future-card-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: #8888bb;
+    margin-bottom: 8px;
+  }
+  .future-card-desc {
+    font-size: 13px;
+    margin-bottom: 14px;
+    line-height: 1.5;
+    color: #666688;
+  }
+  .future-card-trigger {
+    font-size: 12px;
+    color: #4a4a6a;
+    font-style: italic;
+    padding-top: 12px;
+    border-top: 1px solid #1e1e3a;
+  }
+  .future-card-trigger strong {
+    color: #6666aa;
+    font-style: normal;
+  }
+
+  /* ===== FOOTER ===== */
+  .footer {
+    border-top: 1px solid #1e1e3a;
+    padding: 24px 32px;
+    text-align: center;
+    margin-top: 40px;
+  }
+  .footer-text {
+    font-size: 13px;
+    color: #555588;
+    letter-spacing: 1px;
+  }
+  .footer-text strong {
+    color: #8888bb;
+  }
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .section-panel {
+    animation: fadeInUp 0.4s ease forwards;
+  }
+  .section-panel:nth-child(2) { animation-delay: 0.05s; }
+  .section-panel:nth-child(3) { animation-delay: 0.1s; }
+  .section-panel:nth-child(4) { animation-delay: 0.15s; }
+  .section-panel:nth-child(5) { animation-delay: 0.2s; }
+  .section-panel:nth-child(6) { animation-delay: 0.25s; }
+  .section-panel:nth-child(7) { animation-delay: 0.3s; }
+
+  /* ===== STATS BAR ===== */
+  .stats-bar {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .stat-chip {
+    background: #12122a;
+    border: 1px solid #1e1e3a;
+    border-radius: 10px;
+    padding: 14px 24px;
+    text-align: center;
+    min-width: 140px;
+    transition: all 0.25s;
+  }
+  .stat-chip:hover {
+    border-color: #2a2a5a;
+    transform: translateY(-2px);
+  }
+  .stat-number {
+    font-size: 28px;
+    font-weight: 800;
+    color: #4a90d9;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #6666aa;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 700px) {
+    .header h1 { font-size: 22px; }
+    .filter-bar { flex-wrap: wrap; }
+    .jump-links { display: none; }
+    .field-cards { grid-template-columns: 1fr; }
+    .flow-row { flex-direction: column; align-items: center; }
+    .flow-arrow { transform: rotate(90deg); padding: 8px 0; }
+    .gate-pipeline { flex-direction: column; align-items: center; }
+    .gate-arrow { transform: rotate(90deg); padding: 8px 0; }
+    .container { padding: 16px 12px 60px; }
+    .section-header { padding: 16px 18px; }
+    .section-panel.open .section-body { padding: 0 18px 18px; }
+  }
+
+  /* ===== DATA ATTRIBUTE FILTER STATES ===== */
+  .field-card[data-status="ready"],
+  .source-card[data-status="ready"],
+  .reg-table tbody tr[data-status="ready"] {}
+  .field-card[data-status="pending"],
+  .source-card[data-status="pending"],
+  .reg-table tbody tr[data-status="pending"] {}
+  .field-card[data-status="future"],
+  .source-card[data-status="future"],
+  .reg-table tbody tr[data-status="future"] {}
+
+  body.filter-ready .field-card:not([data-status="ready"]),
+  body.filter-ready .source-card:not([data-status="ready"]),
+  body.filter-ready .reg-table tbody tr:not([data-status="ready"]) {
+    opacity: 0.15;
+    pointer-events: none;
+  }
+  body.filter-pending .field-card:not([data-status="pending"]),
+  body.filter-pending .source-card:not([data-status="pending"]),
+  body.filter-pending .reg-table tbody tr:not([data-status="pending"]) {
+    opacity: 0.15;
+    pointer-events: none;
+  }
+  body.filter-future .field-card:not([data-status="future"]),
+  body.filter-future .source-card:not([data-status="future"]),
+  body.filter-future .reg-table tbody tr:not([data-status="future"]) {
+    opacity: 0.15;
+    pointer-events: none;
+  }
+
+  /* ===== PULSE DOT ===== */
+  .pulse-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  .pulse-dot.green { background: #48c78e; }
+  .pulse-dot.amber { background: #ffb74d; }
+  .pulse-dot.blue { background: #4a90d9; }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(74,144,217,0.4); }
+    50% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(74,144,217,0); }
+  }
+
+  /* ===== SCROLL ANIMATIONS ===== */
+  .scroll-animate {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .scroll-animate.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .scroll-animate:nth-child(2) { transition-delay: 0.05s; }
+  .scroll-animate:nth-child(3) { transition-delay: 0.1s; }
+  .scroll-animate:nth-child(4) { transition-delay: 0.15s; }
+  .scroll-animate:nth-child(5) { transition-delay: 0.2s; }
+  .scroll-animate:nth-child(6) { transition-delay: 0.25s; }
+
+  /* ===== GLOW EFFECTS ===== */
+  .flow-node.primary::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(74,144,217,0.3), rgba(72,199,142,0.1));
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .flow-node.primary:hover::before {
+    opacity: 1;
+  }
+
+  /* ===== SECTION PANEL GLOW ON HOVER ===== */
+  .section-panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #4a90d9, transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .section-panel {
+    position: relative;
+  }
+  .section-panel:hover::before {
+    opacity: 0.5;
+  }
+  .section-panel.open::before {
+    opacity: 1;
+  }
+
+  /* ===== STAT CHIP HOVER GLOW ===== */
+  .stat-chip:hover {
+    box-shadow: 0 4px 20px rgba(74,144,217,0.1);
+  }
+
+  /* ===== PROGRESS INDICATORS ===== */
+  .progress-bar-container {
+    margin-top: 20px;
+    padding: 16px 20px;
+    background: #0d0d1a;
+    border: 1px solid #1e1e3a;
+    border-radius: 10px;
+  }
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .progress-label-text { color: #6666aa; }
+  .progress-label-pct { color: #4a90d9; font-weight: 700; }
+  .progress-track {
+    height: 6px;
+    background: #1a1a3e;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 0;
+  }
+  .progress-fill.green { background: linear-gradient(90deg, #48c78e, #38a07e); }
+  .progress-fill.blue { background: linear-gradient(90deg, #4a90d9, #3a70b0); }
+  .progress-fill.amber { background: linear-gradient(90deg, #ffb74d, #e09940); }
+
+  /* ===== LEGEND ===== */
+  .legend-row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    padding: 14px 20px;
+    background: #0d0d1a;
+    border: 1px solid #1e1e3a;
+    border-radius: 8px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #8888aa;
+  }
+  .legend-swatch {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+  }
+
+  /* ===== PRINT STYLES ===== */
+  @media print {
+    body { background: #fff; color: #000; }
+    .filter-bar { display: none; }
+    .header { background: #fff; border-bottom: 2px solid #333; }
+    .header h1, .header h1 span { color: #000; }
+    .header-brand, .header .subtitle { color: #555; }
+    .section-panel, .field-card, .source-card, .future-card, .roadmap-card {
+      background: #fff;
+      border-color: #ccc;
+      break-inside: avoid;
+    }
+    .section-panel.open .section-body { max-height: none; }
+    .badge { border-width: 1px; }
+    .scroll-animate { opacity: 1; transform: none; }
+    .confidential { color: #c00; border-color: #c00; }
+  }
+
+  /* ===== TOOLTIP ===== */
+  .info-tip {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #2a2a5a;
+    color: #6666aa;
+    font-size: 10px;
+    text-align: center;
+    line-height: 16px;
+    cursor: help;
+    margin-left: 6px;
+    position: relative;
+    font-weight: 700;
+  }
+  .info-tip:hover {
+    background: #4a90d9;
+    color: #fff;
+  }
+  .info-tip .tip-text {
+    visibility: hidden;
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1a1a3e;
+    border: 1px solid #3a3a6a;
+    color: #c0c0e0;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 200;
+    opacity: 0;
+    transition: opacity 0.2s, visibility 0.2s;
+    margin-bottom: 6px;
+    font-weight: 400;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  }
+  .info-tip:hover .tip-text {
+    visibility: visible;
+    opacity: 1;
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="header">
+  <div class="header-brand">MEROKA</div>
+  <h1>Legal &amp; Regulatory <span>Treasure Map</span></h1>
+  <div class="subtitle">Direct Contracting Marketplace &nbsp;|&nbsp; March 2026</div>
+  <div class="confidential">Confidential</div>
+</header>
+
+<!-- ===== FILTER BAR ===== -->
+<nav class="filter-bar">
+  <label>Filter</label>
+  <button class="filter-btn active" data-filter="all" onclick="applyFilter('all')">All</button>
+  <button class="filter-btn" data-filter="ready" onclick="applyFilter('ready')">Ready</button>
+  <button class="filter-btn" data-filter="pending" onclick="applyFilter('pending')">Pending</button>
+  <button class="filter-btn" data-filter="future" onclick="applyFilter('future')">Future</button>
+  <div class="jump-links">
+    <a class="jump-link" href="#sec-1">Fields</a>
+    <a class="jump-link" href="#sec-2">Matrix</a>
+    <a class="jump-link" href="#sec-3">Contracts</a>
+    <a class="jump-link" href="#sec-4">Gates</a>
+    <a class="jump-link" href="#sec-5">Roadmap</a>
+    <a class="jump-link" href="#sec-6">Sources</a>
+    <a class="jump-link" href="#sec-7">Future</a>
+  </div>
+</nav>
+
+<!-- ===== MAIN ===== -->
+<main class="container">
+
+  <!-- Stats Bar -->
+  <div class="stats-bar">
+    <div class="stat-chip">
+      <div class="stat-number">11</div>
+      <div class="stat-label">Data Fields</div>
+    </div>
+    <div class="stat-chip">
+      <div class="stat-number">10</div>
+      <div class="stat-label">Reg Domains</div>
+    </div>
+    <div class="stat-chip">
+      <div class="stat-number">2</div>
+      <div class="stat-label">Gate Checks</div>
+    </div>
+    <div class="stat-chip">
+      <div class="stat-number">4</div>
+      <div class="stat-label">Roadmap Phases</div>
+    </div>
+    <div class="stat-chip">
+      <div class="stat-number">6</div>
+      <div class="stat-label">Data Sources</div>
+    </div>
+  </div>
+
+  <!-- ========================================= -->
+  <!-- SECTION 1: THE 11 LEGAL DATA FIELDS       -->
+  <!-- ========================================= -->
+  <div class="section-panel open" id="sec-1">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-number">1</div>
+      <div>
+        <div class="section-title">The 11 Legal Data Fields</div>
+        <div class="section-subtitle">Practice, Employer, and System fields powering the legal agent</div>
+      </div>
+      <div class="section-chevron">&#9660;</div>
+    </div>
+    <div class="section-body">
+
+      <!-- Practice Side -->
+      <div class="field-group-label">Practice Side (P1 &ndash; P4)</div>
+      <div class="field-cards">
+
+        <!-- P1 -->
+        <div class="field-card" data-status="ready" onclick="toggleCard(this)">
+          <div class="field-card-top">
+            <span class="badge-code practice">P1</span>
+            <span class="field-card-name">Legal Entity Name + NPI</span>
+          </div>
+          <div class="field-card-source">Source: CMS PECOS</div>
+          <div class="field-card-badges">
+            <span class="badge badge-green">Public Easy</span>
+            <span class="badge badge-blue">Required</span>
+          </div>
+          <div class="field-card-detail">
+            <div class="field-detail-inner">
+              <div class="detail-row"><span class="detail-label">Description</span><span class="detail-value">Official legal entity name and National Provider Identifier, used as the primary key for practice identity and regulatory lookups.</span></div>
+              <div class="detail-row"><span class="detail-label">Data Format</span><span class="detail-value">String (entity name) + 10-digit NPI number</span></div>
+              <div class="detail-row"><span class="detail-label">Update Freq.</span><span class="detail-value">Monthly refresh from PECOS API</span></div>
+            </div>
+          </div>
+          <span class="field-card-expand-hint">click to expand</span>
+        </div>
+
+        <!-- P2 -->
+        <div class="field-card" data-status="ready" onclick="toggleCard(this)">
+          <div class="field-card-top">
+            <span class="badge-code practice">P2</span>
+            <span class="field-card-name">Active MA Medical Licence (Y/N)</span>
+          </div>
+          <div class="field-card-source">Source: MA Board of Registration in Medicine</div>
+          <div class="field-card-badges">
+            <span class="badge badge-amber">Public Hard</span>
+            <span class="badge badge-red">Gate Check</span>
+          </div>
+          <div class="field-card-detail">
+            <div class="field-detail-inner">
+              <div class="detail-row"><span class="detail-label">Description</span><span class="detail-value">Boolean check confirming at least one physician at the practice holds an active, unrestricted Massachusetts medical licence. Blocks onboarding if false.</span></div>
+              <div class="detail-row"><span class="detail-label">Data Format</span><span class="detail-value">Boolean (Y/N) + licence number + expiry date</span></div>
+              <div class="detail-row"><span class="detail-label">Update Freq.</span><span class="detail-value">Weekly scrape; real-time check at onboarding</span></div>
+            </div>
+          </div>
+          <span class="field-card-expand-hint">click to expand</span>
+        </div>
+
+        <!-- P3 -->
+        <div class="field-card" data-status="ready" onclick="toggleCard(this)">
+          <div class="field-card-top">
+            <span class="badge-code practice">P3</span>
+            <span class="field-card-name">OIG Exclusion Status (Y/N)</span>
+          </div>
+          <div class="field-card-source">Source: OIG LEIE Database</div>
+          <div class="field-card-badges">
+            <span class="badge badge-green">Public Easy</span>
+            <span class="badge badge-red">Gate Check</span>
+          </div>
+          <div class="field-card-detail">
+            <div class="field-detail-inner">
+              <div class="detail-row"><span class="detail-label">Description</span><span class="detail-value">Boolean check against the OIG List of Excluded Individuals/Entities. Any exclusion flags human review and blocks automated onboarding.</span></div>
+              <div class="detail-row"><span class="detail-label">Data Format</span><span class="detail-value">Boolean (Y/N) + exclusion type if applicable</span></div>
+              <div class="detail-row"><span class="detail-label">Update Freq.</span><span class="detail-value">Monthly file from OIG; real-time API at onboarding</span></div>
+            </div>
+          </div>
+          <span class="field-card-expand-hint">click to expand</span>
+        </div>
+
+        <!-- P4 -->
+        <div class="field-card" data-status="ready" onclick="toggleCard(this)">
+          <div class="field-card-top">
+            <span class="badge-code practice">P4</span>
+            <span class="field-card-name">Price List (Procedure + Price + Capacity)</span>
+          </div>
+          <div class="field-card-source">Source: Practice self-submitted</div>
+          <div class="field-card-badges">
+            <span class="badge badge-purple">Private</span>
+            <span class="badge badge-blue">Required</span>
+          </div>
+          <div class="field-card-detail">
+            <div class="field-detail-inner">
+              <div class="detail-row"><span class="detail-label">Description</span><span class="detail-value">Practice-submitted schedule of procedures, pricing, and available capacity. Forms the basis for Schedule B of the T&Cs and is the core marketplace matching data.</span></div>
+              <div class="detail-row"><span class="detail-label">Data Format</span><span class="detail-value">JSON array: [{procedure, cpt_code, price_cents, weekly_slots}]</span></div>
+              <div class="detail-row"><span class="detail-label">Update Freq.</span><span class="detail-value">Practice-initiated; refreshed on contract renewal</span></div>
+            </div>
+          </div>
+          <span class="field-card-expand-hint">click to expand</span>
+        </div>
+      </div>
+
+      <!-- Employer Side -->
+      <div class="field-group-label">Employer Side (E1 &ndash; E3)</div>
+      <div class="field-cards">
+
+        <!-- E1 -->
+        <div class="field-card" data-status="ready" onclick="toggleCard(this)">
+          <div class="field-card-top">
+            <span class="badge-code employer">E1</span>
+            <span class="field-card-name">Legal Entity Name + FEIN</span>
+          </div>
+          <div class="field-card-source">Source: Form 5500 / Self-reported</div>
+          <div class="field-card-badges">
+            <span class="badge badge-green">Public</span>
+            <span class="badge badge-blue">Required</span>
+          </div>
+          <div class="field-card-detail">
+            <div class="field-detail-inner">
+              <div class="detail-row"><span class="detail-label">Description</span><span class="detail-value">Official legal entity name and Federal Employer Identification Number. Cross-referenced with Form 5500 filings where available to confirm entity identity.</span></div>
+              <div class="detail-row"><span class="detail-label">Data Format</span><span class="detail-value">String (entity name) + 9-digit FEIN (XX-XXXXXXX)</span></div>
+              <div class="detail-row"><span class="detail-label">Update Freq.</span><span class="detail-value">At onboarding; annual refresh with Form 5500</span></div>
+            </div>
+          </div>
+          <span class="field-card-expand-hint">click to expand</span>
+        </div>
+
+        <!-- E2 -->
+        <div class="field-card" data-status="ready" onclick="toggleCard(this)">
+          <div class="field-card-top">
+            <span class="badge-code employer">E2</span>
+            <span class="field-card-name">Plan Type: Self-Funded (Y/N)</span>
+          </div>
+          <div class="field-card-source">Source: Form 5500 Schedule A</div>
+          <div class="field-card-badges">
+            <span class="badge badge-green">Public</span>
+            <span class="badge badge-blue">Required</span>
+          </div>
+          <div class="field-card-detail">
+            <div class="field-detail-inner">
+              <div class="detail-row"><span class="detail-label">Description</span><span class="detail-value">Boolean confirming the employer's health plan is self-funded (not fully insured). Critical for ERISA preemption analysis and contract structure.</span></div>
+              <div class="detail-row"><span class="detail-label">Data Format</span><span class="detail-value">Boolean (Y/N) + plan type details</span></div>
+              <div class="detail-row"><span class="detail-label">Update Freq.</span><span class="detail-value">Annual via Form 5500; confirmed at onboarding</span></div>
+            </div>
+          </div>
+          <span class="field-card-expand-hint">click to expand</span>
+        </div>
+
+        <!-- E3 -->
+        <div class="field-card" data-status="ready" onclick="toggleCard(this)">
+          <div class="field-card-top">
+            <span class="badge-code employer">E3</span>
+            <span class="field-card-name">Employer State</span>
+          </div>
+          <div class="field-card-source">Source: Self-reported</div>
+          <div class="field-card-badges">
+            <span class="badge badge-purple">Private</span>
+            <span class="badge badge-blue">Required</span>
+          </div>
+          <div class="field-card-detail">
+            <div class="field-detail-inner">
+              <div class="detail-row"><span class="detail-label">Description</span><span class="detail-value">State of incorporation or primary operations for the employer. Used to determine applicable state regulations, compliance flags, and contract template variant.</span></div>
+              <div class="detail-row"><span class="detail-label">Data Format</span><span class="detail-value">2-letter state code (e.g., MA, NY)</span></div>
+              <div class="detail-row"><span class="detail-label">Update Freq.</span><span class="detail-value">At onboarding; updated if employer relocates</span></div>
+            </div>
+          </div>
+          <span class="field-card-expand-hint">click to expand</span>
+        </div>
+      </div>
+
+      <!-- System Fields -->
+      <div class="field-group-label">System Fields (S1 &ndash; S4)</div>
+      <div class="field-cards">
+
+        <!-- S1 -->
+        <div class="field-card" data-status="ready" onclick="toggleCard(this)">
+          <div class="field-card-top">
+            <span class="badge-code system">S1</span>
+            <span class="field-card-name">MA Template Variant</span>
+          </div>
+          <div class="field-card-source">Source: Foley (quarterly updates)</div>
+          <div class="field-card-badges">
+            <span class="badge badge-gray">Internal</span>
+            <span class="badge badge-blue">Required</span>
+          </div>
+          <div class="field-card-detail">
+            <div class="field-detail-inner">
+              <div class="detail-row"><span class="detail-label">Description</span><span class="detail-value">Massachusetts-specific contract template variant maintained by Foley & Lardner. Contains state-compliant language for DPC agreements, ERISA carve-outs, and BAA provisions.</span></div>
+              <div class="detail-row"><span class="detail-label">Data Format</span><span class="detail-value">Template ID + version string + effective date</span></div>
+              <div class="detail-row"><span class="detail-label">Update Freq.</span><span class="detail-value">Quarterly review by Foley; ad-hoc for regulatory changes</span></div>
+            </div>
+          </div>
+          <span class="field-card-expand-hint">click to expand</span>
+        </div>
+
+        <!-- S2 -->
+        <div class="field-card" data-status="ready" onclick="toggleCard(this)">
+          <div class="field-card-top">
+            <span class="badge-code system">S2</span>
+            <span class="field-card-name">State Compliance Flags</span>
+          </div>
+          <div class="field-card-source">Source: MA Regulatory Matrix</div>
+          <div class="field-card-badges">
+            <span class="badge badge-gray">Internal</span>
+            <span class="badge badge-blue">Required</span>
+          </div>
+          <div class="field-card-detail">
+            <div class="field-detail-inner">
+              <div class="detail-row"><span class="detail-label">Description</span><span class="detail-value">Derived compliance flags from the state regulatory matrix. Determines which contract clauses, disclosures, and addenda are required for a given state.</span></div>
+              <div class="detail-row"><span class="detail-label">Data Format</span><span class="detail-value">JSON object: {dpc_statute: bool, tpa_exempt: bool, baa_required: bool, ...}</span></div>
+              <div class="detail-row"><span class="detail-label">Update Freq.</span><span class="detail-value">Updated when regulatory matrix changes; quarterly review</span></div>
+            </div>
+          </div>
+          <span class="field-card-expand-hint">click to expand</span>
+        </div>
+
+        <!-- S3 -->
+        <div class="field-card" data-status="pending" onclick="toggleCard(this)">
+          <div class="field-card-top">
+            <span class="badge-code system">S3</span>
+            <span class="field-card-name">TPA Requirements</span>
+          </div>
+          <div class="field-card-source">Source: Foley confirmation</div>
+          <div class="field-card-badges">
+            <span class="badge badge-gray">Internal</span>
+            <span class="badge badge-amber">Pending Foley</span>
+          </div>
+          <div class="field-card-detail">
+            <div class="field-detail-inner">
+              <div class="detail-row"><span class="detail-label">Description</span><span class="detail-value">Third-Party Administrator requirements and classification guidance. Determines whether Meroka's platform fee structure requires TPA licensing in given states.</span></div>
+              <div class="detail-row"><span class="detail-label">Data Format</span><span class="detail-value">Structured guidance document + boolean flags per state</span></div>
+              <div class="detail-row"><span class="detail-label">Update Freq.</span><span class="detail-value">Pending initial Foley determination; then as-needed</span></div>
+            </div>
+          </div>
+          <span class="field-card-expand-hint">click to expand</span>
+        </div>
+
+        <!-- S4 -->
+        <div class="field-card" data-status="ready" onclick="toggleCard(this)">
+          <div class="field-card-top">
+            <span class="badge-code system">S4</span>
+            <span class="field-card-name">Contract Template ID</span>
+          </div>
+          <div class="field-card-source">Source: Generated by system</div>
+          <div class="field-card-badges">
+            <span class="badge badge-gray">Internal</span>
+            <span class="badge badge-blue">Required</span>
+          </div>
+          <div class="field-card-detail">
+            <div class="field-detail-inner">
+              <div class="detail-row"><span class="detail-label">Description</span><span class="detail-value">System-generated unique identifier linking a specific contract to its template version, state variant, and populated data fields. Used for audit trail and version control.</span></div>
+              <div class="detail-row"><span class="detail-label">Data Format</span><span class="detail-value">UUID v4 + template version hash</span></div>
+              <div class="detail-row"><span class="detail-label">Update Freq.</span><span class="detail-value">Generated at contract creation; immutable once signed</span></div>
+            </div>
+          </div>
+          <span class="field-card-expand-hint">click to expand</span>
+        </div>
+      </div>
+
+      <!-- Legend -->
+      <div class="legend-row">
+        <div class="legend-item"><div class="legend-swatch" style="background:#48c78e"></div>Public Easy</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:#ffb74d"></div>Public Hard</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:#a064dc"></div>Private</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:#8c8caa"></div>Internal</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:#4a90d9"></div>Required</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:#ff6363"></div>Gate Check</div>
+      </div>
+
+      <!-- Progress -->
+      <div class="progress-bar-container">
+        <div class="progress-label">
+          <span class="progress-label-text">Fields Ready for MVP</span>
+          <span class="progress-label-pct" id="fields-pct">91%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill green" id="fields-bar" style="width:91%"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================= -->
+  <!-- SECTION 2: MA STATE REGULATORY MATRIX      -->
+  <!-- ========================================= -->
+  <div class="section-panel" id="sec-2">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-number">2</div>
+      <div>
+        <div class="section-title">MA State Regulatory Matrix</div>
+        <div class="section-subtitle">10 regulatory domains governing the Massachusetts marketplace launch</div>
+      </div>
+      <div class="section-chevron">&#9660;</div>
+    </div>
+    <div class="section-body">
+      <div class="reg-table-wrapper">
+        <table class="reg-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Domain</th>
+              <th>Statute</th>
+              <th>Implication</th>
+              <th>Status</th>
+              <th>Action</th>
+              <th>Owner</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-status="ready">
+              <td>1</td>
+              <td class="domain-col">DPC Statute</td>
+              <td class="statute-col">MGL c.176Y</td>
+              <td>Membership fees not classified as insurance</td>
+              <td><span class="badge badge-green"><span class="pulse-dot green"></span>Active</span></td>
+              <td>Confirm structure aligns</td>
+              <td>Foley</td>
+            </tr>
+            <tr data-status="pending">
+              <td>2</td>
+              <td class="domain-col">TPA Licensing</td>
+              <td class="statute-col">MA Insurance Regs</td>
+              <td>Platform fee structure must avoid TPA classification</td>
+              <td><span class="badge badge-amber"><span class="pulse-dot amber"></span>Open Question</span></td>
+              <td>Foley to confirm</td>
+              <td>Foley</td>
+            </tr>
+            <tr data-status="pending">
+              <td>3</td>
+              <td class="domain-col">Insurance Division</td>
+              <td class="statute-col">DOI Rules</td>
+              <td>Platform must not be construed as insurer</td>
+              <td><span class="badge badge-amber"><span class="pulse-dot amber"></span>To Verify</span></td>
+              <td>Review with Foley</td>
+              <td>Foley</td>
+            </tr>
+            <tr data-status="ready">
+              <td>4</td>
+              <td class="domain-col">Medical Board</td>
+              <td class="statute-col">MA Board of Reg.</td>
+              <td>Licence gate check required for all providers</td>
+              <td><span class="badge badge-green"><span class="pulse-dot green"></span>Automated</span></td>
+              <td>Built into pipeline</td>
+              <td>JV + Eng</td>
+            </tr>
+            <tr data-status="ready">
+              <td>5</td>
+              <td class="domain-col">Cost Containment</td>
+              <td class="statute-col">Ch. 224</td>
+              <td>Cost growth benchmarks; monitor for compliance</td>
+              <td><span class="badge badge-blue"><span class="pulse-dot blue"></span>Monitor</span></td>
+              <td>Annual review</td>
+              <td>JV</td>
+            </tr>
+            <tr data-status="ready">
+              <td>6</td>
+              <td class="domain-col">ERISA Preemption</td>
+              <td class="statute-col">29 USC 1144</td>
+              <td>Direct payment structure not classified as insurance</td>
+              <td><span class="badge badge-green">Clear</span></td>
+              <td>Template language confirmed</td>
+              <td>Foley</td>
+            </tr>
+            <tr data-status="ready">
+              <td>7</td>
+              <td class="domain-col">Unfair Practices</td>
+              <td class="statute-col">Ch. 176D</td>
+              <td>Marketing and solicitation compliance</td>
+              <td><span class="badge badge-blue"><span class="pulse-dot blue"></span>Monitor</span></td>
+              <td>Review marketing language</td>
+              <td>Foley</td>
+            </tr>
+            <tr data-status="pending">
+              <td>8</td>
+              <td class="domain-col">Data Privacy</td>
+              <td class="statute-col">HIPAA + MA regs</td>
+              <td>BAA required for all data handling</td>
+              <td><span class="badge badge-amber"><span class="pulse-dot amber"></span>Required</span></td>
+              <td>BAA template from Foley</td>
+              <td>Foley</td>
+            </tr>
+            <tr data-status="ready">
+              <td>9</td>
+              <td class="domain-col">HPC</td>
+              <td class="statute-col">Health Policy Comm.</td>
+              <td>Network adequacy and cost scrutiny</td>
+              <td><span class="badge badge-blue"><span class="pulse-dot blue"></span>Monitor</span></td>
+              <td>No action at MVP</td>
+              <td>JV</td>
+            </tr>
+            <tr data-status="future">
+              <td>10</td>
+              <td class="domain-col">CHIA</td>
+              <td class="statute-col">All-Payer Claims DB</td>
+              <td>Data use agreements for claims data</td>
+              <td><span class="badge badge-gray">Future</span></td>
+              <td>Not needed at MVP</td>
+              <td>JV</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Regulatory Summary -->
+      <div style="display:flex;gap:16px;margin-top:20px;flex-wrap:wrap">
+        <div class="progress-bar-container" style="flex:1;min-width:200px">
+          <div class="progress-label">
+            <span class="progress-label-text">Clear / Active</span>
+            <span class="progress-label-pct">50%</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill green" style="width:50%"></div>
+          </div>
+        </div>
+        <div class="progress-bar-container" style="flex:1;min-width:200px">
+          <div class="progress-label">
+            <span class="progress-label-text">Monitoring</span>
+            <span class="progress-label-pct">30%</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill blue" style="width:30%"></div>
+          </div>
+        </div>
+        <div class="progress-bar-container" style="flex:1;min-width:200px">
+          <div class="progress-label">
+            <span class="progress-label-text">Open / Pending</span>
+            <span class="progress-label-pct">20%</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill amber" style="width:20%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Legend for Regulatory -->
+      <div class="legend-row">
+        <div class="legend-item"><div class="legend-swatch" style="background:#48c78e"></div>Active / Clear / Automated</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:#4a90d9"></div>Monitor</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:#ffb74d"></div>Open Question / To Verify / Required</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:#8c8caa"></div>Future</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================= -->
+  <!-- SECTION 3: CONTRACT ARCHITECTURE           -->
+  <!-- ========================================= -->
+  <div class="section-panel" id="sec-3">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-number">3</div>
+      <div>
+        <div class="section-title">Contract Architecture</div>
+        <div class="section-subtitle">End-to-end contract flow from practice onboarding to employer matching</div>
+      </div>
+      <div class="section-chevron">&#9660;</div>
+    </div>
+    <div class="section-body">
+      <div class="contract-flow">
+
+        <!-- Main Flow Row -->
+        <div class="flow-row">
+          <div class="flow-node">
+            <div class="flow-node-label">Practice Signs T&amp;Cs</div>
+            <div class="flow-node-sub">2-year agreement</div>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-node primary">
+            <div class="flow-node-label">Meroka Marketplace</div>
+            <div class="flow-node-sub">Matching &amp; Compliance Engine</div>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-node">
+            <div class="flow-node-label">Employer Signs MSA</div>
+            <div class="flow-node-sub">Annual agreement</div>
+          </div>
+        </div>
+
+        <!-- Sub-documents Row -->
+        <div class="flow-down-connector">
+          <div class="flow-down-line">
+            <div class="flow-down-arrow">&#9660;</div>
+            <div class="flow-sub-node">Schedule B<br><small>Prices &amp; Capacity</small></div>
+          </div>
+          <div class="flow-down-line">
+            <div class="flow-down-arrow">&#9660;</div>
+            <div class="flow-sub-node">BAA Addendum<br><small>Both Sides</small></div>
+          </div>
+          <div class="flow-down-line">
+            <div class="flow-down-arrow">&#9660;</div>
+            <div class="flow-sub-node">Appendix A<br><small>Matched Practices</small></div>
+          </div>
+        </div>
+
+        <!-- Payment Flow -->
+        <div class="flow-payment-row">
+          <div class="flow-payment-box">
+            <div class="flow-payment-title">Payment Flow</div>
+            <div class="flow-payment-line"><span>Employer &rarr; Practice</span> &nbsp; Direct payment for services</div>
+            <div class="flow-payment-line"><span>Meroka &rarr; Platform Fee</span> &nbsp; Separate billing (not intermediary)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Key Contract Principles -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-top:24px">
+        <div style="background:#0d0d1a;border:1px solid #1e1e3a;border-radius:10px;padding:18px 20px;border-left:3px solid #4a90d9">
+          <div style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#4a90d9;margin-bottom:6px;font-weight:600">Principle 1</div>
+          <div style="font-size:14px;color:#ffffff;font-weight:600;margin-bottom:4px">No Intermediary Risk</div>
+          <div style="font-size:12px;color:#8888aa">Meroka never touches payment between employer and practice. Platform fee is separate.</div>
+        </div>
+        <div style="background:#0d0d1a;border:1px solid #1e1e3a;border-radius:10px;padding:18px 20px;border-left:3px solid #48c78e">
+          <div style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#48c78e;margin-bottom:6px;font-weight:600">Principle 2</div>
+          <div style="font-size:14px;color:#ffffff;font-weight:600;margin-bottom:4px">ERISA Shield</div>
+          <div style="font-size:12px;color:#8888aa">Self-funded employer plans benefit from federal ERISA preemption of state insurance regs.</div>
+        </div>
+        <div style="background:#0d0d1a;border:1px solid #1e1e3a;border-radius:10px;padding:18px 20px;border-left:3px solid #a064dc">
+          <div style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#a064dc;margin-bottom:6px;font-weight:600">Principle 3</div>
+          <div style="font-size:14px;color:#ffffff;font-weight:600;margin-bottom:4px">DPC Safe Harbor</div>
+          <div style="font-size:12px;color:#8888aa">MGL c.176Y explicitly exempts DPC membership fees from insurance classification.</div>
+        </div>
+        <div style="background:#0d0d1a;border:1px solid #1e1e3a;border-radius:10px;padding:18px 20px;border-left:3px solid #ffb74d">
+          <div style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#ffb74d;margin-bottom:6px;font-weight:600">Principle 4</div>
+          <div style="font-size:14px;color:#ffffff;font-weight:600;margin-bottom:4px">Data Minimization</div>
+          <div style="font-size:12px;color:#8888aa">Only 11 data fields collected. PHI handled under BAA. No unnecessary data retention.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================= -->
+  <!-- SECTION 4: GATE CHECK FLOW                 -->
+  <!-- ========================================= -->
+  <div class="section-panel" id="sec-4">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-number">4</div>
+      <div>
+        <div class="section-title">Gate Check Flow</div>
+        <div class="section-subtitle">Practice onboarding validation pipeline with automated checks</div>
+      </div>
+      <div class="section-chevron">&#9660;</div>
+    </div>
+    <div class="section-body">
+      <div class="gate-flow">
+        <div class="gate-pipeline">
+
+          <!-- Step 1 -->
+          <div class="gate-step">
+            <div class="gate-step-box action">
+              <div class="gate-step-title">Practice Onboarding</div>
+              <div class="gate-step-sub">Submit P1 &amp; P4</div>
+            </div>
+          </div>
+
+          <div class="gate-arrow">&rarr;</div>
+
+          <!-- Step 2: P2 Check -->
+          <div class="gate-step">
+            <div class="gate-step-box check">
+              <div class="gate-step-title">P2 Check</div>
+              <div class="gate-step-sub">MA Licence Verify</div>
+            </div>
+            <div class="gate-branch">
+              <div class="gate-branch-arrow">&#9660;</div>
+              <div class="gate-branch-box">FLAGGED<br>Human Review</div>
+            </div>
+          </div>
+
+          <div class="gate-arrow">&rarr;</div>
+
+          <!-- Step 3: P3 Check -->
+          <div class="gate-step">
+            <div class="gate-step-box check">
+              <div class="gate-step-title">P3 Check</div>
+              <div class="gate-step-sub">OIG LEIE Lookup</div>
+            </div>
+            <div class="gate-branch">
+              <div class="gate-branch-arrow">&#9660;</div>
+              <div class="gate-branch-box">FLAGGED<br>Human Review</div>
+            </div>
+          </div>
+
+          <div class="gate-arrow">&rarr;</div>
+
+          <!-- Step 4: Both Clear -->
+          <div class="gate-step">
+            <div class="gate-step-box success">
+              <div class="gate-step-title">Both CLEAR</div>
+              <div class="gate-step-sub">All gates passed</div>
+            </div>
+          </div>
+
+          <div class="gate-arrow">&rarr;</div>
+
+          <!-- Step 5: Generate T&Cs -->
+          <div class="gate-step">
+            <div class="gate-step-box action">
+              <div class="gate-step-title">Generate T&amp;Cs</div>
+              <div class="gate-step-sub">Auto-populate template</div>
+            </div>
+          </div>
+
+          <div class="gate-arrow">&rarr;</div>
+
+          <!-- Step 6: E-Sign -->
+          <div class="gate-step">
+            <div class="gate-step-box success">
+              <div class="gate-step-title">E-Sign</div>
+              <div class="gate-step-sub">Contract executed</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Gate Check SLA Table -->
+      <div style="margin-top:24px">
+        <div style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#4a90d9;margin-bottom:12px;font-weight:600">Estimated Timing</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px">
+          <div style="background:#0d0d1a;border:1px solid #1e1e3a;border-radius:8px;padding:14px 16px;text-align:center">
+            <div style="font-size:22px;font-weight:800;color:#4a90d9;margin-bottom:2px">&lt; 5s</div>
+            <div style="font-size:11px;color:#6666aa;text-transform:uppercase;letter-spacing:1px">P2 Licence Check</div>
+          </div>
+          <div style="background:#0d0d1a;border:1px solid #1e1e3a;border-radius:8px;padding:14px 16px;text-align:center">
+            <div style="font-size:22px;font-weight:800;color:#4a90d9;margin-bottom:2px">&lt; 3s</div>
+            <div style="font-size:11px;color:#6666aa;text-transform:uppercase;letter-spacing:1px">P3 OIG Lookup</div>
+          </div>
+          <div style="background:#0d0d1a;border:1px solid #1e1e3a;border-radius:8px;padding:14px 16px;text-align:center">
+            <div style="font-size:22px;font-weight:800;color:#48c78e;margin-bottom:2px">&lt; 30s</div>
+            <div style="font-size:11px;color:#6666aa;text-transform:uppercase;letter-spacing:1px">T&Cs Generation</div>
+          </div>
+          <div style="background:#0d0d1a;border:1px solid #1e1e3a;border-radius:8px;padding:14px 16px;text-align:center">
+            <div style="font-size:22px;font-weight:800;color:#48c78e;margin-bottom:2px">&lt; 2 min</div>
+            <div style="font-size:11px;color:#6666aa;text-transform:uppercase;letter-spacing:1px">Total Onboarding</div>
+          </div>
+          <div style="background:#0d0d1a;border:1px solid #1e1e3a;border-radius:8px;padding:14px 16px;text-align:center">
+            <div style="font-size:22px;font-weight:800;color:#ff6363;margin-bottom:2px">24-48h</div>
+            <div style="font-size:11px;color:#6666aa;text-transform:uppercase;letter-spacing:1px">Human Review (flagged)</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================= -->
+  <!-- SECTION 5: LEGAL AGENT ROADMAP             -->
+  <!-- ========================================= -->
+  <div class="section-panel" id="sec-5">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-number">5</div>
+      <div>
+        <div class="section-title">Legal Agent Roadmap</div>
+        <div class="section-subtitle">Four-phase evolution from MVP to autonomous legal intelligence</div>
+      </div>
+      <div class="section-chevron">&#9660;</div>
+    </div>
+    <div class="section-body">
+      <div class="roadmap">
+
+        <!-- V1 -->
+        <div class="roadmap-card v1">
+          <div class="roadmap-version">V1</div>
+          <div class="roadmap-label">MVP &mdash; Now</div>
+          <ul class="roadmap-list">
+            <li>11 data fields defined</li>
+            <li>Automated gate checks (P2 + P3)</li>
+            <li>MA contract template</li>
+            <li>Auto-populate from fields</li>
+            <li>E-sign integration</li>
+          </ul>
+        </div>
+
+        <!-- V2 -->
+        <div class="roadmap-card v2">
+          <div class="roadmap-version">V2</div>
+          <div class="roadmap-label">Multi-State</div>
+          <ul class="roadmap-list">
+            <li>Multi-state templates</li>
+            <li>Dynamic schedule generation</li>
+            <li>Form 5500 cross-referencing</li>
+            <li>State-specific compliance flags</li>
+          </ul>
+        </div>
+
+        <!-- V3 -->
+        <div class="roadmap-card v3">
+          <div class="roadmap-version">V3</div>
+          <div class="roadmap-label">Intelligence</div>
+          <ul class="roadmap-list">
+            <li>Regulatory change monitoring</li>
+            <li>Risk scoring per contract</li>
+            <li>Amendment suggestions</li>
+            <li>Compliance dashboard</li>
+          </ul>
+        </div>
+
+        <!-- V4 -->
+        <div class="roadmap-card v4">
+          <div class="roadmap-version">V4</div>
+          <div class="roadmap-label">Autonomous</div>
+          <ul class="roadmap-list">
+            <li>Proprietary legal corpus</li>
+            <li>CIN monitoring &amp; alerts</li>
+            <li>Predictive clause generation</li>
+            <li>Self-updating templates</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================= -->
+  <!-- SECTION 6: DATA SOURCES                    -->
+  <!-- ========================================= -->
+  <div class="section-panel" id="sec-6">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-number">6</div>
+      <div>
+        <div class="section-title">Data Sources</div>
+        <div class="section-subtitle">Six data sources feeding the legal data pipeline</div>
+      </div>
+      <div class="section-chevron">&#9660;</div>
+    </div>
+    <div class="section-body">
+      <div class="source-cards">
+
+        <div class="source-card" data-status="ready">
+          <div class="source-card-name">CMS PECOS</div>
+          <div class="source-card-row"><span class="source-card-label">Provides</span><span class="source-card-value">NPI, legal entity name, provider enrollment status</span></div>
+          <div class="source-card-row"><span class="source-card-label">Access</span><span class="source-card-value"><span class="badge badge-green">Public API</span></span></div>
+          <div class="source-card-row"><span class="source-card-label">Format</span><span class="source-card-value">REST API / JSON, bulk CSV download</span></div>
+          <div class="source-card-row"><span class="source-card-label">Frequency</span><span class="source-card-value">Monthly refresh; real-time API available</span></div>
+        </div>
+
+        <div class="source-card" data-status="ready">
+          <div class="source-card-name">MA Board of Registration in Medicine</div>
+          <div class="source-card-row"><span class="source-card-label">Provides</span><span class="source-card-value">Active licence status, licence number, expiry date</span></div>
+          <div class="source-card-row"><span class="source-card-label">Access</span><span class="source-card-value"><span class="badge badge-amber">Public (Scrape)</span></span></div>
+          <div class="source-card-row"><span class="source-card-label">Format</span><span class="source-card-value">HTML scrape (no structured API)</span></div>
+          <div class="source-card-row"><span class="source-card-label">Frequency</span><span class="source-card-value">Weekly scrape; real-time lookup at onboarding</span></div>
+        </div>
+
+        <div class="source-card" data-status="ready">
+          <div class="source-card-name">OIG LEIE Database</div>
+          <div class="source-card-row"><span class="source-card-label">Provides</span><span class="source-card-value">Exclusion status, exclusion type, reinstatement date</span></div>
+          <div class="source-card-row"><span class="source-card-label">Access</span><span class="source-card-value"><span class="badge badge-green">Public Download</span></span></div>
+          <div class="source-card-row"><span class="source-card-label">Format</span><span class="source-card-value">Monthly CSV file; REST API available</span></div>
+          <div class="source-card-row"><span class="source-card-label">Frequency</span><span class="source-card-value">Monthly file; real-time API at onboarding</span></div>
+        </div>
+
+        <div class="source-card" data-status="ready">
+          <div class="source-card-name">DOL Form 5500</div>
+          <div class="source-card-row"><span class="source-card-label">Provides</span><span class="source-card-value">Employer FEIN, plan type, self-funded status, TPA info</span></div>
+          <div class="source-card-row"><span class="source-card-label">Access</span><span class="source-card-value"><span class="badge badge-green">Public Download</span></span></div>
+          <div class="source-card-row"><span class="source-card-label">Format</span><span class="source-card-value">Bulk CSV/XML; EFAST2 system</span></div>
+          <div class="source-card-row"><span class="source-card-label">Frequency</span><span class="source-card-value">Annual filings; ~18-month lag typical</span></div>
+        </div>
+
+        <div class="source-card" data-status="pending">
+          <div class="source-card-name">Foley &amp; Lardner LLP</div>
+          <div class="source-card-row"><span class="source-card-label">Provides</span><span class="source-card-value">Contract templates, regulatory guidance, TPA analysis</span></div>
+          <div class="source-card-row"><span class="source-card-label">Access</span><span class="source-card-value"><span class="badge badge-purple">Engagement</span></span></div>
+          <div class="source-card-row"><span class="source-card-label">Format</span><span class="source-card-value">DOCX templates, legal memos, advisory calls</span></div>
+          <div class="source-card-row"><span class="source-card-label">Frequency</span><span class="source-card-value">Quarterly template review; ad-hoc advisory</span></div>
+        </div>
+
+        <div class="source-card" data-status="ready">
+          <div class="source-card-name">Practice Self-Submission</div>
+          <div class="source-card-row"><span class="source-card-label">Provides</span><span class="source-card-value">Price list, capacity, service descriptions</span></div>
+          <div class="source-card-row"><span class="source-card-label">Access</span><span class="source-card-value"><span class="badge badge-purple">Private</span></span></div>
+          <div class="source-card-row"><span class="source-card-label">Format</span><span class="source-card-value">Structured form input; validated JSON</span></div>
+          <div class="source-card-row"><span class="source-card-label">Frequency</span><span class="source-card-value">At onboarding; practice-initiated updates</span></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================= -->
+  <!-- SECTION 7: FUTURE STATE                    -->
+  <!-- ========================================= -->
+  <div class="section-panel" id="sec-7">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-number">7</div>
+      <div>
+        <div class="section-title">Future State</div>
+        <div class="section-subtitle">Advanced regulatory domains activated by growth triggers</div>
+      </div>
+      <div class="section-chevron">&#9660;</div>
+    </div>
+    <div class="section-body">
+      <div class="future-cards">
+
+        <div class="future-card">
+          <div class="future-card-title">Anti-Kickback Statute (AKS)</div>
+          <div class="future-card-desc">Federal AKS analysis becomes relevant when the marketplace handles any federal healthcare program patients or when payment flows could be construed as inducements for referrals.</div>
+          <div class="future-card-trigger"><strong>Trigger:</strong> Platform begins handling Medicare/Medicaid patients, or payment structures include referral-based incentives.</div>
+        </div>
+
+        <div class="future-card">
+          <div class="future-card-title">Stark Law (Physician Self-Referral)</div>
+          <div class="future-card-desc">Stark Law compliance required when physicians have financial relationships with entities they refer to. Relevant if practice ownership structures create referral loops within the marketplace.</div>
+          <div class="future-card-trigger"><strong>Trigger:</strong> Physician ownership or investment interest in marketplace practices creates potential self-referral patterns.</div>
+        </div>
+
+        <div class="future-card">
+          <div class="future-card-title">Clinically Integrated Networks (CIN)</div>
+          <div class="future-card-desc">CIN monitoring and antitrust analysis required when marketplace concentration could enable coordinated pricing or reduce competition in local markets.</div>
+          <div class="future-card-trigger"><strong>Trigger:</strong> Marketplace reaches sufficient practice density in a geography to warrant FTC/DOJ antitrust review.</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="footer-text">
+    Meroka Legal &amp; Regulatory Workstream &nbsp;|&nbsp; <strong>JV Cordeiro</strong> &nbsp;|&nbsp; March 2026
+  </div>
+</footer>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+  /* ---- Section Toggle ---- */
+  function toggleSection(header) {
+    var panel = header.closest('.section-panel');
+    panel.classList.toggle('open');
+  }
+
+  /* ---- Field Card Toggle ---- */
+  function toggleCard(card) {
+    card.classList.toggle('expanded');
+  }
+
+  /* ---- Filter System ---- */
+  function applyFilter(filter) {
+    var body = document.body;
+    body.className = '';
+    if (filter !== 'all') {
+      body.classList.add('filter-' + filter);
+    }
+
+    var btns = document.querySelectorAll('.filter-btn');
+    btns.forEach(function(btn) {
+      btn.classList.remove('active');
+      if (btn.getAttribute('data-filter') === filter) {
+        btn.classList.add('active');
+      }
+    });
+  }
+
+  /* ---- Smooth scroll for jump links ---- */
+  document.querySelectorAll('.jump-link').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      var target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        var panel = target;
+        if (!panel.classList.contains('open')) {
+          panel.classList.add('open');
+        }
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  /* ---- Keyboard: Escape to collapse all ---- */
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.section-panel.open').forEach(function(p) {
+        p.classList.remove('open');
+      });
+      document.querySelectorAll('.field-card.expanded').forEach(function(c) {
+        c.classList.remove('expanded');
+      });
+    }
+  });
+
+  /* ---- On load: open Section 1 by default + animate stats ---- */
+  document.addEventListener('DOMContentLoaded', function() {
+    /* Section 1 is already open via class="open" in HTML */
+
+    /* Animate stat numbers on load */
+    animateStats();
+
+    /* Intersection Observer for scroll-triggered animations */
+    setupScrollAnimations();
+  });
+
+  /* ---- Animated Counters ---- */
+  function animateStats() {
+    var statNumbers = document.querySelectorAll('.stat-number');
+    statNumbers.forEach(function(el) {
+      var target = parseInt(el.textContent, 10);
+      var current = 0;
+      var duration = 1200;
+      var startTime = null;
+
+      function step(timestamp) {
+        if (!startTime) startTime = timestamp;
+        var progress = Math.min((timestamp - startTime) / duration, 1);
+        var eased = 1 - Math.pow(1 - progress, 3);
+        current = Math.round(eased * target);
+        el.textContent = current;
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        }
+      }
+      requestAnimationFrame(step);
+    });
+  }
+
+  /* ---- Scroll Animations ---- */
+  function setupScrollAnimations() {
+    if (!('IntersectionObserver' in window)) return;
+
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.field-card, .source-card, .future-card, .roadmap-card, .gate-step').forEach(function(el) {
+      el.classList.add('scroll-animate');
+      observer.observe(el);
+    });
+  }
+
+  /* ---- Expand All / Collapse All (keyboard shortcuts) ---- */
+  document.addEventListener('keydown', function(e) {
+    /* Ctrl+Shift+E = expand all */
+    if (e.ctrlKey && e.shiftKey && e.key === 'E') {
+      e.preventDefault();
+      document.querySelectorAll('.section-panel').forEach(function(p) {
+        p.classList.add('open');
+      });
+    }
+    /* Ctrl+Shift+C = collapse all (only sections) */
+    if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+      e.preventDefault();
+      document.querySelectorAll('.section-panel').forEach(function(p) {
+        p.classList.remove('open');
+      });
+    }
+  });
+
+  /* ---- Tooltip on hover for badges ---- */
+  document.querySelectorAll('.badge').forEach(function(badge) {
+    badge.style.cursor = 'default';
+  });
+
+  /* ---- Print-friendly: expand all sections ---- */
+  window.addEventListener('beforeprint', function() {
+    document.querySelectorAll('.section-panel').forEach(function(p) {
+      p.classList.add('open');
+    });
+    document.querySelectorAll('.field-card').forEach(function(c) {
+      c.classList.add('expanded');
+    });
+  });
+
+  /* ---- Track last opened section for back navigation ---- */
+  var sectionHistory = [];
+  var originalToggle = toggleSection;
+  toggleSection = function(header) {
+    var panel = header.closest('.section-panel');
+    var id = panel.id;
+    if (!panel.classList.contains('open')) {
+      sectionHistory.push(id);
+    }
+    originalToggle(header);
+  };
+</script>
+
+</body>
+</html>
