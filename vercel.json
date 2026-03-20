@@ -1,0 +1,6 @@
+{
+  "redirects": [
+    { "source": "/", "destination": "/meroka-wireframe-v3.html", "permanent": false },
+    { "source": "/meroka-wireframe-v2.html", "destination": "/meroka-wireframe-v3.html", "permanent": false }
+  ]
+}
