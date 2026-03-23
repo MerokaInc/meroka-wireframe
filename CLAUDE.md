@@ -2,7 +2,19 @@
 
 Meroka is a market-making platform enabling direct contracting between independent medical practices and self-insured employers — bypassing traditional insurance networks. The core thesis: independent practices deliver equal or better care at significantly lower cost than hospital-affiliated and PE-owned practices, but lack the infrastructure to contract directly with employers. Meroka provides that infrastructure.
 
-The interactive wireframe (`meroka-wireframe-v2.html`) maps the full data pipeline: 30+ public and private data sources → AWS S3 Data Lake → Data Warehouse (70+ fields) → Products.
+The interactive wireframe (`meroka-wireframe-v3.html`) maps the full data pipeline: 30+ public and private data sources → AWS S3 Data Lake → Data Warehouse (70+ fields) → Products.
+
+## Dev Server
+
+```
+npx live-server --port=8000 --open=meroka-wireframe-v3.html
+```
+
+Hot-reloads on file save. Requires Node.js.
+
+## Diagrams
+
+Mermaid JS is loaded from CDN (`startOnLoad: false`). Page files in `pages/` can include `<div class="mermaid">` blocks — call `mermaid.run()` after injecting HTML to render them. See `pages/tic-rates-structure.js` for an example.
 
 ## Team
 

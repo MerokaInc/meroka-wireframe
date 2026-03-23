@@ -96,6 +96,23 @@ h1 { font-size: 28px; font-weight: 800; color: #1a237e; letter-spacing: -0.5px; 
 }
 .m-legal { background: #e8eaf6; color: #283593; }
 
+/* TiC sub-items */
+.src-item.tic-row { flex-wrap: wrap; padding-bottom: 0; }
+.tic-toggle {
+  display: flex; align-items: center; gap: 4px; width: 100%; cursor: pointer; padding-bottom: 5px;
+}
+.tic-toggle .sn { flex: 1; }
+.tic-children {
+  width: 100%; border-top: 1px solid #f0f0f0; margin-top: 0;
+}
+.tic-child {
+  padding: 4px 10px 4px 20px; font-size: 10px; display: flex; align-items: center;
+  gap: 6px; border-bottom: 1px solid #f8f8f8; cursor: pointer; transition: background 0.15s;
+}
+.tic-child:last-child { border-bottom: none; }
+.tic-child:hover { background: #f0fdf4; }
+.tic-child .tc-name { font-weight: 600; color: #333; flex: 1; }
+
 .src-item {
   padding: 5px 10px; font-size: 10px; display: flex; align-items: center;
   justify-content: space-between; border-bottom: 1px solid #f5f5f5;
@@ -1389,7 +1406,20 @@ svg.lines { position: absolute; top: 0; left: 0; pointer-events: none; z-index: 
     <div class="sg-header">Cost &amp; Utilization</div>
     <div class="src-item" data-id="medicare_util" data-effort="med"><span class="sn">Medicare Util &amp; Payment</span><span class="src-status-badge">&#10003;</span><span class="src-effort effort-med"></span><span class="sm m-api">API</span></div>
     <div class="src-item" data-id="medicaid_taf" data-effort="med"><span class="sn">Medicaid TAF (T-MSIS)</span><span class="src-status-badge">&#10003;</span><span class="src-effort effort-med"></span><span class="sm m-csv">CSV</span></div>
-    <div class="src-item" data-id="tic" data-effort="med"><span class="sn">TiC Files</span><span class="src-status-badge">&#10003;</span><span class="src-effort effort-med"></span><span class="sm m-json">JSON</span></div>
+    <div class="src-item tic-row" data-id="tic" data-effort="med">
+      <div class="tic-toggle">
+        <span class="sn">TiC Files</span>
+        <span class="src-status-badge">&#10003;</span>
+        <span class="src-effort effort-med"></span>
+        <span class="sm m-json">JSON</span>
+      </div>
+      <div class="tic-children">
+        <div class="tic-child" onclick="openPipelineFlow('tic'); event.stopPropagation();">
+          <span class="tc-name">In-Network Rates</span>
+          <span style="font-size:10px;color:#94a3b8;cursor:pointer;font-weight:700;border:1.5px solid #cbd5e1;border-radius:50%;width:14px;height:14px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">?</span>
+        </div>
+      </div>
+    </div>
     <div class="src-item" data-id="fair_health" data-effort="high"><span class="sn">FAIR Health</span><span class="src-status-badge">&#10003;</span><span class="src-effort effort-high"></span><span class="sm m-api">API</span></div>
     <div class="src-item" data-id="meps" data-effort="low"><span class="sn">MEPS</span><span class="src-status-badge">&#10003;</span><span class="src-effort effort-low"></span><span class="sm m-csv">CSV</span></div>
     <div class="src-item" data-id="rand" data-effort="high"><span class="sn">RAND / Sage</span><span class="src-status-badge">&#10003;</span><span class="src-effort effort-high"></span><span class="sm m-api">API</span></div>
@@ -3802,92 +3832,7 @@ function openMktComponentDetail(comp) {
 
 // ── Pipeline Flow Overlay ──
 
-const PIPELINE_FLOWS = {
-  nppes: {
-    name: 'NPPES (NPI Registry)',
-    source: 'Centers for Medicare & Medicaid Services (CMS)',
-    url: 'https://download.cms.gov/nppes/NPI_Files.html',
-    refresh: 'Monthly',
-    rawSize: '~9 GB CSV',
-    rawColumns: '330+',
-    layers: [
-      {
-        type: 'raw', name: 'Raw Ingestion',
-        storage: 'S3', script: 'ingest.py',
-        path: 's3://meroka-raw/nppes/v202603/2026-03-12/nppes_full.csv',
-        desc: 'Original NPPES file downloaded from CMS, stored immutably. Version extracted from filename.',
-        sampleData: {
-          headers: ['NPI', 'Entity Type Code', 'Provider Organization Name', 'Provider Last Name', 'Provider Practice Address', 'Taxonomy Code_1'],
-          rows: [
-            ['1234567890', '2', 'ACME MEDICAL GROUP LLC', '""', '123 MAIN ST STE 200', '207Q00000X'],
-            ['1538462790', '1', '""', 'SMITH', '456 OAK AVE', '208D00000X'],
-            ['0056789012', '2', 'OAK AVENUE CLINIC', '""', '456 OAK AVE FL 2', '261QP2300X']
-          ],
-          nullCols: [3, 2]
-        }
-      },
-      {
-        type: 'etl', name: 'AWS Glue ETL',
-        script: 'transform.py',
-        steps: [
-          'Read manifest \u2192 get latest version path',
-          'Read raw CSV from S3',
-          'Filter to Entity Type 2 (organizations only)',
-          'Normalize NPI \u2014 zero-pad to 10 chars',
-          'Transform: rename columns, type-cast, standardize case',
-          'Add lineage columns: _source_version_id, _run_id, _ingested_at',
-          'Write to Unified Iceberg table (overwrite)',
-          'Validate: row count, null rates, schema match'
-        ],
-        schemaSnippet: 'SCHEMA = {\n  "source": "nppes",\n  "unique_key": ["npi"],\n  "columns": [\n    {"raw": "NPI", "clean": "npi", "type": "str"},\n    {"raw": "Provider Organization Name", "clean": "organization_name", "type": "str"},\n    {"raw": "Provider Practice Address", "clean": "practice_address", "type": "str"},\n    // ~20 columns defined\n  ]\n}'
-      },
-      {
-        type: 'unified', name: 'Unified Table',
-        storage: 'S3 + Iceberg', script: 'transform.py',
-        path: 's3://meroka-unified/nppes/',
-        desc: 'Cleaned, standardized Iceberg table. One table per source, latest version only.',
-        sampleData: {
-          headers: ['npi', 'entity_type', 'organization_name', 'practice_address', 'taxonomy_code', '_source_version_id', '_run_id'],
-          rows: [
-            ['1234567890', '2', 'Acme Medical Group LLC', '123 Main St Ste 200', '207Q00000X', 'v202603', 'a1b2c3d4'],
-            ['0056789012', '2', 'Oak Avenue Clinic', '456 Oak Ave Fl 2', '261QP2300X', 'v202603', 'a1b2c3d4']
-          ],
-          lineageCols: [5, 6]
-        },
-        fieldsProvided: ['npi', 'practice_name', 'address', 'phone', 'specialty', 'taxonomy_code', 'providers', 'provider_count']
-      },
-      {
-        type: 'consolidated', name: 'Consolidated Entity',
-        storage: 'Redshift', script: 'build.py',
-        desc: 'Cross-source joins into business entities. Hub-and-spoke schema centered on PRACTICE (NPI).',
-        joinDesc: 'unified.nppes JOIN unified.pecos ON npi',
-        sampleData: {
-          headers: ['npi', 'nppes_name', 'pecos_name', 'practice_name', 'practice_address', 'ownership_type', '_run_id'],
-          rows: [
-            ['1234567890', 'Acme Medical Group LLC', 'Acme Medical Group', 'Acme Medical Group', '123 Main St Ste 200', 'null', 'e5f6g7h8'],
-            ['0056789012', 'Oak Avenue Clinic', 'Oak Avenue Clinic', 'Oak Avenue Clinic', '456 Oak Ave Fl 2', 'null', 'e5f6g7h8']
-          ],
-          goldenCols: [3],
-          nullCols: [5],
-          lineageCols: [6]
-        }
-      },
-      {
-        type: 'aggregate', name: 'Aggregate Views',
-        storage: 'Redshift', script: 'materialized views',
-        desc: 'Pre-computed metrics optimized for querying. Reads from consolidated tables.',
-        consumers: ['Direct SQL queries', 'Slack bot (keyword \u2192 SQL)', 'Streamlit dashboard'],
-        sampleData: {
-          headers: ['npi', 'practice_name', 'specialty', 'region', 'provider_count', 'taxonomy_codes'],
-          rows: [
-            ['1234567890', 'Acme Medical Group', 'Family Medicine', 'MA', '12', '207Q00000X'],
-            ['0056789012', 'Oak Avenue Clinic', 'Clinic/Center', 'MA', '3', '261QP2300X']
-          ]
-        }
-      }
-    ]
-  }
-};
+const PIPELINE_FLOWS = {};
 
 function openPipelineFlow(sourceId) {
   const flow = PIPELINE_FLOWS[sourceId];
@@ -3912,6 +3857,19 @@ function openPipelineFlow(sourceId) {
   html += `<span><strong style="color:#e2e8f0">Refresh:</strong> ${flow.refresh}</span>`;
   if (flow.url) html += `<a href="${flow.url}" target="_blank" style="color:#60a5fa;text-decoration:none;margin-left:auto;">Source \u2197</a>`;
   html += `</div>`;
+
+  // If flow provides raw HTML, use it directly instead of rendering layers
+  if (flow.html) {
+    html += flow.html;
+    panel.innerHTML = html;
+    overlay.classList.add('open');
+    overlay.onclick = (e) => { if (e.target === overlay) closePipelineFlow(); };
+    // Render any mermaid diagrams in the injected HTML
+    if (typeof mermaid !== 'undefined') {
+      mermaid.run({ nodes: panel.querySelectorAll('.mermaid') });
+    }
+    return;
+  }
 
   flow.layers.forEach((layer, i) => {
     if (layer.type === 'etl') {
@@ -4401,5 +4359,9 @@ window.addEventListener('resize', () => {
   }
 });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({ startOnLoad: false, theme: 'dark' });</script>
+<script src="pages/nppes-pipeline-flow.js"></script>
+<script src="pages/tic-rates-structure.js"></script>
 </body>
 </html>
