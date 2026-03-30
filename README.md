@@ -6,8 +6,6 @@ Interactive wireframe for the OpenSecret healthcare intelligence platform. Visua
 
 ## Contributing
 
-Commits on `main` will be automatically deployed to [playground-six-pi.vercel.app](playground-six-pi.vercel.app).
-
 You can also just open your local copy of `meroka-wireframe-v3.html` in your browser in order to preview your changes.
 
 ### Local Dev Server
