@@ -62,6 +62,7 @@ Owner: Othmane. Coming soon.
 |---|---|---|---|---|---|
 | NPPES (NPI Registry) | `nppes` | CSV (~9 GB), JSON API | Monthly | ~8-9M NPIs | Free |
 | CMS PECOS (Provider Enrollment) | `pecos` | CSV, API | Quarterly | ~1.5-2M providers | Free |
+| DAC (Doctors & Clinicians) | `dac` | CSV (~300 MB) | Monthly | ~2.8M records | Free |
 | CMS Provider of Services | `pos` | CSV, JSON API | Quarterly | ~100K providers + 300K labs | Free |
 | CMS CLIA Labs | `clia` | CSV (~156 MB), JSON API | Quarterly | ~244K labs | Free |
 | Medicare Physician Utilization | `medicare_util` | Tab-delimited CSV, JSON API | Annually (1-2yr lag) | ~10M+ rows/year | Free |

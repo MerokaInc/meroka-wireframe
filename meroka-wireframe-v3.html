@@ -1398,6 +1398,7 @@ svg.lines { position: absolute; top: 0; left: 0; pointer-events: none; z-index: 
     <div class="sg-header">Government &amp; Registry</div>
     <div class="src-item" data-id="nppes" data-effort="low"><span class="sn">NPPES</span><span class="src-status-badge">&#10003;</span><span class="src-effort effort-low"></span><span class="sm m-csv">CSV</span></div>
     <div class="src-item" data-id="pecos" data-effort="low"><span class="sn">CMS PECOS</span><span class="src-status-badge">&#10003;</span><span class="src-effort effort-low"></span><span class="sm m-csv">CSV</span></div>
+    <div class="src-item" data-id="dac" data-effort="low"><span class="sn">DAC (Doctors &amp; Clinicians)</span><span class="src-status-badge">&#10003;</span><span class="src-effort effort-low"></span><span class="sm m-csv">CSV</span></div>
     <div class="src-item" data-id="pos" data-effort="low"><span class="sn">CMS Provider of Services</span><span class="src-status-badge">&#10003;</span><span class="src-effort effort-low"></span><span class="sm m-csv">CSV</span></div>
     <div class="src-item" data-id="hrsa" data-effort="med"><span class="sn">HRSA FQHC</span><span class="src-status-badge">&#10003;</span><span class="src-effort effort-med"></span><span class="sm m-api">API</span></div>
   </div>
@@ -1689,7 +1690,7 @@ const svg = document.getElementById('svg');
 const lake = document.getElementById('lake');
 
 const SRC_COLORS = {
-  nppes:'#5c7cfa', pecos:'#5c7cfa', pos:'#5c7cfa', hrsa:'#5c7cfa',
+  nppes:'#5c7cfa', pecos:'#5c7cfa', dac:'#5c7cfa', pos:'#5c7cfa', hrsa:'#5c7cfa',
   medicare_util:'#37b24d', medicaid_taf:'#37b24d', tic:'#37b24d', fair_health:'#37b24d', meps:'#37b24d', rand:'#37b24d',
   mips:'#f59f00', care_compare:'#f59f00', leapfrog:'#f59f00', med_boards:'#f59f00', sunshine:'#f59f00',
   website:'#e8590c', google:'#e8590c', healthgrades:'#e8590c', linkedin:'#e8590c', sos:'#e8590c',
@@ -1698,7 +1699,7 @@ const SRC_COLORS = {
 };
 
 const SRC_GROUP = {
-  nppes:'gov', pecos:'gov', pos:'gov', hrsa:'gov',
+  nppes:'gov', pecos:'gov', dac:'gov', pos:'gov', hrsa:'gov',
   medicare_util:'cost', medicaid_taf:'cost', tic:'cost', fair_health:'cost', meps:'cost', rand:'cost',
   mips:'quality', care_compare:'quality', leapfrog:'quality', med_boards:'quality', sunshine:'quality',
   website:'web', google:'web', healthgrades:'web', linkedin:'web', sos:'web',
@@ -1713,16 +1714,17 @@ const COMPLETED_SOURCES = new Set(['nppes']);
 
 const BACKLOG = [
   // Tier 1: Core dependencies — unblock 3+ treasure maps
-  { id:'pecos', name:'CMS PECOS', eta:'Week 1', tier: 1, unblocks: 'Independence (1,4), Cost, Quality', effort: 'low' },
-  { id:'medicare_util', name:'Medicare Util & Payment', eta:'Week 1-2', tier: 1, unblocks: 'Independence (5), Cost (1), Quality (6)', effort: 'med' },
+  { id:'pecos', name:'CMS PECOS', eta:'Week 1', tier: 1, unblocks: 'Independence (1-2), Cost, Quality', effort: 'low' },
+  { id:'dac', name:'DAC (Doctors & Clinicians)', eta:'Week 1', tier: 1, unblocks: 'Independence (1-2, 5-6)', effort: 'low' },
+  { id:'medicare_util', name:'Medicare Util & Payment', eta:'Week 1-2', tier: 1, unblocks: 'Independence (1, 5-6), Cost (1), Quality (6)', effort: 'med' },
   { id:'form5500', name:'DOL Form 5500', eta:'Week 1-2', tier: 1, unblocks: 'Employer (1-2), Legal (4)', effort: 'low' },
   // Tier 2: High-value quick wins
-  { id:'pos', name:'CMS Provider of Services', eta:'Week 1', tier: 2, unblocks: 'Independence (2)', effort: 'low' },
-  { id:'hrsa', name:'HRSA FQHC', eta:'Week 1', tier: 2, unblocks: 'Independence (2)', effort: 'low' },
-  { id:'pe_list', name:'Known PE Platforms', eta:'Week 1', tier: 2, unblocks: 'Independence (3)', effort: 'low' },
+  { id:'pos', name:'CMS Provider of Services', eta:'Week 1', tier: 2, unblocks: 'Independence (optional)', effort: 'low' },
+  { id:'hrsa', name:'HRSA FQHC', eta:'Week 1', tier: 2, unblocks: 'Independence (optional)', effort: 'low' },
+  { id:'pe_list', name:'Known PE Platforms', eta:'Week 1', tier: 2, unblocks: 'Independence (4)', effort: 'low' },
   { id:'mips', name:'MIPS / QPP', eta:'Week 2', tier: 2, unblocks: 'Quality (1)', effort: 'med' },
   { id:'care_compare', name:'CMS Care Compare', eta:'Week 2', tier: 2, unblocks: 'Quality (2)', effort: 'med' },
-  { id:'tic', name:'TiC Files', eta:'Week 2-4', tier: 2, unblocks: 'Independence (5), Cost (2)', effort: 'high' },
+  { id:'tic', name:'TiC Files', eta:'Week 2-4', tier: 2, unblocks: 'Cost (2)', effort: 'high' },
   // Tier 3: Legal framework (parallel track)
   { id:'aks', name:'Anti-Kickback (AKS)', eta:'Week 2-3', tier: 3, unblocks: 'Legal (1)', effort: 'med' },
   { id:'stark', name:'Stark Law', eta:'Week 2-3', tier: 3, unblocks: 'Legal (2)', effort: 'med' },
@@ -1732,8 +1734,8 @@ const BACKLOG = [
   { id:'state_law', name:'State Law', eta:'Week 3-4', tier: 3, unblocks: 'Legal (4)', effort: 'high' },
   // Tier 4: Enrichment
   { id:'meps', name:'MEPS', eta:'Week 3-4', tier: 4, unblocks: 'Cost (4), Employer (4)', effort: 'low' },
-  { id:'website', name:'Practice Websites', eta:'Week 3-5', tier: 4, unblocks: 'Independence (6)', effort: 'high' },
-  { id:'sos', name:'SEC / State SoS', eta:'Week 4-5', tier: 4, unblocks: 'Independence (7-8)', effort: 'high' },
+  { id:'website', name:'Practice Websites', eta:'Week 3-5', tier: 4, unblocks: 'Independence (7)', effort: 'high' },
+  { id:'sos', name:'SEC / State SoS', eta:'Week 4-5', tier: 4, unblocks: 'Independence (optional — UCC filings)', effort: 'high' },
   { id:'google', name:'Google Business', eta:'Week 4-5', tier: 4, unblocks: 'Quality (4)', effort: 'med' },
   { id:'fair_health', name:'FAIR Health', eta:'Week 4-5', tier: 4, unblocks: 'Cost (3)', effort: 'high' },
   { id:'med_boards', name:'State Medical Boards', eta:'Week 4-6', tier: 4, unblocks: 'Quality (3)', effort: 'high' },
@@ -1747,7 +1749,7 @@ const BACKLOG = [
   { id:'gao', name:'GAO Market Conc.', eta:'Week 8+', tier: 5, unblocks: 'Comparison (optional)', effort: 'high' },
   // New sources
   { id:'medicaid_taf', name:'Medicaid TAF (T-MSIS)', eta:'Week 1-2', tier: 1, unblocks: 'Cost (Medicaid baseline), Independence', effort: 'med' },
-  { id:'sunshine', name:'Sunshine Act (Open Payments)', eta:'Week 2', tier: 2, unblocks: 'Independence (conflict of interest), Quality', effort: 'low' },
+  { id:'sunshine', name:'Sunshine Act (Open Payments)', eta:'Week 2', tier: 2, unblocks: 'Independence (3 — teaching hospitals, third-party routing, ownership)', effort: 'low' },
 ];
 
 const ETA_ORDER = ['Week 1','Week 1-2','Week 2','Week 2-3','Week 2-4','Week 3-4','Week 3-5','Week 4-5','Week 4-6','Week 5-6','Week 6-7','Week 6-8','Week 7-8','Week 8+'];
@@ -1758,19 +1760,20 @@ const TREASURE_MAPS = [
   {
     id: 'tmap-independence',
     name: 'Independent Classifier',
-    outcome: 'Tag every practice NPI as Independent / PE-backed / System-Affiliated / FQHC / Academic with a confidence score.',
-    capability: 'Know which practices are truly independent — the supply side.',
+    liveUrl: 'https://independence-ownership-decision-tre.vercel.app/',
+    outcome: 'Tag every physician and practice NPI as Independent / Employed / Unknown with a confidence score (HIGH/MEDIUM/LOW). 8-step pipeline using 7 public data sources + PE portfolio scraping.',
+    capability: 'Know which practices are truly independent — the supply side. Multi-signal scoring engine with 12 practice-level and 12 provider-level signals.',
     resultFields: ['ownership_type', 'parent_entity', 'independence_confidence', 'pe_platform_match', 'facility_type_flag', 'fqhc_flag'],
     steps: [
-      { title: 'Pull NPPES Registry', type: 'ingestion', desc: 'Download full NPPES, group individual NPIs under practice org NPI via PECOS reassignment.', sources: ['nppes', 'pecos'], fields: ['npi', 'practice_name', 'providers', 'provider_count', 'taxonomy_code', 'address', 'specialty', 'reassignment_org', 'credentials'] },
-      { title: 'Flag Hospitals & FQHCs', type: 'ingestion', desc: 'Cross-reference CMS Provider of Services + HRSA to eliminate system-owned and FQHC practices.', sources: ['pos', 'hrsa'], fields: ['facility_type_flag', 'fqhc_flag'] },
-      { title: 'Match Known PE Platforms', type: 'ingestion', desc: 'Match against PESP tracker (~488 PE hospitals, 420+ platforms). Flag any match.', sources: ['pe_list'], fields: ['pe_platform_match'] },
-      { title: 'Provider Count Filter', type: 'ingestion', desc: 'Eliminate orgs with >50 reassigned providers — unlikely independent.', sources: ['nppes', 'pecos'], fields: ['provider_count', 'providers'] },
-      { title: 'Rate-Based Filter', type: 'ingestion', desc: 'Pull Medicare + TiC rates. Practices billing >150% of Medicare are likely system-affiliated.', sources: ['medicare_util', 'tic', 'fair_health'], fields: ['medicare_allowed_amt', 'commercial_rates_by_payer', 'fair_health_benchmark'] },
-      { title: 'Web Scrape Validation', type: 'ingestion', desc: 'Scrape practice websites for corporate parent mentions, PE logos, "part of [system]" language. Claude classifies.', sources: ['website'], fields: ['website_url', 'legal_entity_name'] },
-      { title: 'UCC Filings + Entity Clustering', type: 'ingestion', desc: 'Search State SoS for UCC-1 filings (PE signal) and shared registered agents (roll-up signal).', sources: ['sos'], fields: ['legal_entity_name', 'parent_entity'] },
-      { title: 'NPPES Auth Official Changes', type: 'ingestion', desc: 'Track authorized official field changes across monthly NPPES snapshots. Physician→administrator = acquisition.', sources: ['nppes'], fields: ['npi', 'ownership_type'] },
-      { title: 'FALSE NEGATIVE PROBLEM', type: 'hard', desc: 'Practices removed from the independent list due to hospital affiliation signals (shared address, billing under system TIN, referral patterns) when they are truly independent. Need: ground-truth validation set, confidence calibration, appeal/override workflow for edge cases.', sources: ['ai_classifier'], fields: ['ownership_type', 'independence_confidence'], deRiskSteps: ['Build ground-truth validation set \u2014 manually verify 50-100 practices across independent/PE/system categories', 'Implement confidence calibration \u2014 output probability scores, not binary labels. Flag <70% confidence for manual review', 'Create appeal/override workflow \u2014 let practices self-report independence status with documentation'] }
+      { title: 'Pull NPPES + DAC Data', type: 'ingestion', desc: 'Download full NPPES (9GB): filter to active individual providers (Entity Type 1) and organizations (Entity Type 2). Load DAC National Downloadable File for facility names and org member counts. Load Medicare Utilization PUF for office vs facility billing percentages.', sources: ['nppes', 'dac', 'medicare_util'], fields: ['npi', 'practice_name', 'providers', 'provider_count', 'taxonomy_code', 'address', 'specialty'] },
+      { title: 'Group Physicians Under Practices', type: 'ingestion', desc: 'Use PECOS reassignment data to link each physician to their billing organization. Join REASGN_BNFT_ENRLMT_ID → RCV_BNFT_ENRLMT_ID → org NPI. Classify as HOSPITAL (codes 00-09, 00-85, 12-Z1) or OTHER. Deduplicate to one row per physician (hospital reassignment takes priority). Detect self-reassignment via name matching + DAC org size ≤19.', sources: ['pecos', 'dac'], fields: ['reassignment_org', 'provider_count', 'credentials'] },
+      { title: 'Remove Hospital System Practices', type: 'ingestion', desc: 'Three methods: (1) NPPES taxonomy codes — prefixes 282N, 282E, 283X, 283Q, 281P, 2865* flag hospitals (-60 pts). (2) Open Payments teaching hospital name extraction — exact match of org names against 1,682 teaching hospitals (-60 pts). (3) Org name keyword scan — HOSPITAL, MEDICAL CENTER, HEALTH SYSTEM, UNIVERSITY, VETERANS, PERMANENTE (-30 pts). Also: third-party entity routing % from Open Payments (-30 pts max) and physician ownership indicator (+20 pts).', sources: ['nppes', 'sunshine'], fields: ['facility_type_flag', 'ownership_type'] },
+      { title: 'Remove Private Equity Practices', type: 'ingestion', desc: 'Scrape PE firm portfolio websites → 746 company names in pe_portfolios.json. Three matching passes against NPPES org_name: (1) Normalized 3+ word match after stripping LLC/INC/CORP suffixes, (2) Original 2-word match with 10-char minimum, (3) Manual NPI overrides. Hard override: pe_ownership = -999, forces classification to Employed HIGH regardless of other signals.', sources: ['pe_list'], fields: ['pe_platform_match', 'parent_entity'] },
+      { title: 'Score Remaining Practices (12 signals)', type: 'ingestion', desc: 'Practice-level scoring: org taxonomy (-60), org name keywords (-30), provider count (+40 to -75), chain of reassignment (-40), avg facility % (-15), avg office % (+10), multi-state presence (-25), specialty diversity (+15 to -20), multi-tenancy/shared address (+25), teaching hospital (-60), third-party entity (-30), physician ownership (+20). Sum all signals → classify: ≥+60 Independent HIGH, ≥+35 MEDIUM, ≥+25 LOW, -14 to +24 Unknown, ≤-15 Employed LOW, ≤-35 MEDIUM, ≤-60 HIGH.', sources: ['nppes', 'pecos', 'dac', 'medicare_util', 'sunshine'], fields: ['ownership_type', 'independence_confidence'] },
+      { title: 'Score Each Provider (12 signals)', type: 'ingestion', desc: 'Provider-level scoring: hospital reassignment (-90), no reassignment (+20), sole proprietor (+40), self-reassignment (+35), org size (+40 to -75), hospital org name (-25), known system name (-25), facility % (specialty-adjusted), office % (specialty-adjusted), practice volume (+15), practice classification (+50 to -50 from Step 5), address peer boost (+35 max). Second pass: Unknown providers near confirmed independents get boosted.', sources: ['nppes', 'pecos', 'dac', 'medicare_util'], fields: ['ownership_type', 'independence_confidence'] },
+      { title: 'Web Search Validation', type: 'ingestion', desc: 'For borderline/Unknown practices, search the web for ownership evidence: "part of [system]" language, PE logos, corporate parent mentions. Manual review of random samples + untested states. Validated accuracy: 96.1% on 304 random samples.', sources: ['website'], fields: ['ownership_type', 'independence_confidence'] },
+      { title: 'Generate Treasure Map Output', type: 'ingestion', desc: 'Final classified tables: physicians_classified (one row per NPI with all 12 signal scores, total score, is_independent, confidence) and practices_classified (one row per org NPI). Stored in DuckDB. Every signal kept separate for full auditability.', sources: ['derived'], fields: ['ownership_type', 'parent_entity', 'independence_confidence'] },
+      { title: 'FALSE NEGATIVE PROBLEM', type: 'hard', desc: 'Independent practices misclassified as employed due to: hospital-sounding names ("University Family Medicine"), shared campus addresses, large independent multi-specialty groups penalized by provider count, hospital-based independent contractors (anesthesia, radiology). Current address peer boost is one-directional (only toward independent). Analyst proposed ratio-based approach for future improvement.', sources: ['ai_classifier'], fields: ['ownership_type', 'independence_confidence'], deRiskSteps: ['Validated on 304 random samples — 96.1% accuracy. 12 misclassifications found and corrected', 'Untested states validation — 15 additional misclassifications found across states with no prior samples', 'Live web search validation — 4 additional corrections from targeted searches on borderline cases', 'Ratio-based address peer boost — weight by % independent vs employed neighbors instead of best-peer-only'] }
     ]
   },
   {
@@ -2064,6 +2067,7 @@ function openTmapDetailPanel(tmap) {
   html += `<div class="detail-panel-header">
     <div class="detail-panel-header-info">
       <div class="detail-panel-title">${tmap.name}</div>
+      ${tmap.liveUrl ? `<a href="${tmap.liveUrl}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:600;color:#6366f1;text-decoration:none;margin:2px 0 4px;padding:2px 8px;background:#eef2ff;border-radius:4px;border:1px solid #c7d2fe;">&#x2197; Live Decision Tree</a>` : ''}
       <div class="detail-panel-desc">${tmap.outcome}</div>
       <div class="detail-panel-meta">${allFields.length} fields &middot; ${sources.length} sources &middot; ${pct}% data ready</div>
     </div>
